@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>You Said "No"</title>
+
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Fetch IP address
+        fetch("https://api.ipify.org?format=json")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("ip-address").textContent = data.ip;
+          });
+
+        // Fetch coordinates
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById("coordinates").textContent = `Latitude: ${lat}, Longitude: ${lon}`;
+            // Optionally, display the map
+            const mapUrl = `https://www.google.com/maps?q=${lat},${lon}&hl=es;z=14&output=embed`;
+            document.getElementById("map").src = mapUrl;
+          });
+        } else {
+          document.getElementById("coordinates").textContent = "Geolocation is not supported by this browser.";
+        }
+      });
+    </script>
+  </head>
+  <body class="bg-red-200 flex items-center justify-center h-screen">
+    <div class="text-center">
+      <h1 class="text-4xl">You don't love Me? 😢</h1>
+      <p>Your IP Address: <span id="ip-address">Fetching...</span></p>
+      <p>Your Coordinates: <span id="coordinates">Fetching...</span></p>
+      <iframe id="map" width="600" height="450" style="border: 0" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </body>
+</html>
